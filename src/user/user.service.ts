@@ -12,7 +12,7 @@ import { UserSigninDto } from './dto/user.signin.dto';
 import { createTokens } from 'src/utils/Tokens/access_refresh.token';
 import { verify } from 'jsonwebtoken';
 import { UserRefreshTokenDto } from './dto/refreshTOken.dto';
-import { LoginResponseInterface, Regenerate_AccessToken_Response_Interface } from 'src/interfaces/user.interface';
+import { LoginResponseInterface, Regenerate_AccessToken_Response_Interface, UserLoginInfoInterface } from 'src/interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -46,7 +46,6 @@ export class UserService {
       .addSelect('users.password')
       .where('users.email=email', { email: userSigninDto.email })
       .getOne();
-    console.log(userExists);
     if (!userExists) {
       throw new BadRequestException('User with this email doesnt exists');
     }
@@ -64,11 +63,18 @@ export class UserService {
     const userData = Object.assign(userExists, { refreshToken });
      await this.usersRepositary.save(userData);
 
+     const userInfo:UserLoginInfoInterface={
+      name:userExists.firstName+" "+userExists.lastName,
+      role:userExists.roles,
+      gender:userExists.gender,
+      id:userExists.id
+     }
     return {
       sucess: true,
       message: 'user login sucessfully',
       accessToken,
       refreshToken,
+      userInfo
     };
   }
 
