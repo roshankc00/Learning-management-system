@@ -23,8 +23,12 @@ export class UserEntity {
     @Column({type:'varchar',length:500})
     phone:string
 
+    @Column({nullable:true})
+    refreshToken:string
+
     @Column({type:'enum',enum:Roles,array:true,default:[Roles.USER]})
     roles:Roles[];
+
 
     @Column({type:'enum',enum:GENDER})
     gender:string

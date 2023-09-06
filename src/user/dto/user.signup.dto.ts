@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsString , MinLength , IsDefined} from "class-validator";
+import { IsNotEmpty, IsString , MinLength , IsDefined, IsEnum} from "class-validator";
 import { UserSigninDto } from "./user.signin.dto";
+import { GENDER } from "src/utils/common/gender.enum";
 
 export class UserSignupDto extends UserSigninDto{
     @IsDefined()
@@ -22,6 +23,15 @@ export class UserSignupDto extends UserSigninDto{
     @IsString({message:'lastname must be string'})
     @MinLength(10,{message:"last name must contain atleast  3 charecter"})
     phone:string
+
+
+
+    @IsDefined()   
+    @IsEnum(GENDER,{message:"Enter the valid gender (male female other)"})
+    @IsString({message:"gender must be of type string"})
+    @IsNotEmpty({message:"gender field cannot  be null"})
+    gender:string;
+
 
 
 

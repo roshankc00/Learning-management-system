@@ -1,5 +1,4 @@
-import { IsNotEmpty,IsEmail, MinLength , IsDefined, IsEnum} from "class-validator";
-import { GENDER } from "src/utils/common/gender.enum";
+import { IsNotEmpty,IsEmail, MinLength , IsDefined} from "class-validator";
 
 export class UserSigninDto{ 
     @IsDefined()   
@@ -13,8 +12,5 @@ export class UserSigninDto{
     password:string;
 
 
-    @IsDefined()   
-    @IsEnum(GENDER,{message:"Enter the valid gender (male female other)"})
-    @IsNotEmpty({message:"gender field cannot  be null"})
-    gender:string;
+
 }
