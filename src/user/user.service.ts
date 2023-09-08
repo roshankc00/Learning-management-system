@@ -9,10 +9,8 @@ import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hash, compare } from 'bcrypt';
 import { UserSigninDto } from './dto/user.signin.dto';
-import { createTokens } from 'src/utils/Tokens/access_refresh.token';
-import { verify } from 'jsonwebtoken';
-import { UserRefreshTokenDto } from './dto/refreshTOken.dto';
-import { LoginResponseInterface, Regenerate_AccessToken_Response_Interface, UserLoginInfoInterface } from 'src/interfaces/user.interface';
+import { createTokens } from 'src/utils/Tokens/access.Token';
+import { LoginResponseInterface, UserLoginInfoInterface, user_SignUp_Response_Interface } from 'src/interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -24,7 +22,7 @@ export class UserService {
 
 
 
-  async signUp(createUserDto: UserSignupDto): Promise<UserEntity> {
+  async signUp(createUserDto: UserSignupDto): Promise<user_SignUp_Response_Interface> {
     const userExists = await this.findUserByEmail(createUserDto.email);
     if (userExists) {
       throw new BadRequestException('User with this email already exists');
@@ -34,7 +32,10 @@ export class UserService {
 
     user = await this.usersRepositary.save(user);
     delete user.password;
-    return user;
+    return {
+      success:true,
+      message:"User signup sucessfully"
+    };
   }
 
 
@@ -58,9 +59,9 @@ export class UserService {
     if (!isPasswordCorrect) {
       throw new BadRequestException('Enter the correct password');
     }
-    const { accessToken, refreshToken } = createTokens(userExists);
+    const { accessToken} = createTokens(userExists);
 
-    const userData = Object.assign(userExists, { refreshToken });
+    const userData = Object.assign(userExists, { accessToken});
      await this.usersRepositary.save(userData);
 
      const userInfo:UserLoginInfoInterface={
@@ -73,7 +74,6 @@ export class UserService {
       sucess: true,
       message: 'user login sucessfully',
       accessToken,
-      refreshToken,
       userInfo
     };
   }
@@ -99,39 +99,11 @@ export class UserService {
 
 
 
-  async generateAccessTokenWithRefreshToken(
-    userRefreshTokenDto: UserRefreshTokenDto,
-  ): Promise<Regenerate_AccessToken_Response_Interface> {
-    const user = await this.usersRepositary.findOneBy({
-      refreshToken: userRefreshTokenDto.refreshToken,
-    });
-    if (!user) {
-      throw new BadRequestException('User with this token doesnt exists');
-    }
 
-     verify(
-      userRefreshTokenDto.refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      (error:any)=>{
-        if(error){
-          throw new BadRequestException('The token has Expired login again');
-
-        }
-      }
-    );
-    const { accessToken, refreshToken } = createTokens(user);
-    const userData = Object.assign(user, { refreshToken });
-    await this.usersRepositary.save(userData);
-
-    return {
-      sucess: true,
-      message: 'Access token created sucessfully',
-      accessToken,
-      refreshToken,
-    };
-  }
 
   async findUserByEmail(email: string) {
     return await this.usersRepositary.findOneBy({ email });
   }
 }
+
+

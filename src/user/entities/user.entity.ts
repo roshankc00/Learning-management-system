@@ -24,7 +24,7 @@ export class UserEntity {
     phone:string
 
     @Column({nullable:true})
-    refreshToken:string
+    accessToken:string
 
     @Column({type:'enum',enum:Roles,array:true,default:[Roles.USER]})
     roles:Roles[];

@@ -11,7 +11,6 @@ export interface createPayload{
 }
 export interface returnTokens{
         accessToken:string
-        refreshToken:string
     }
 
 
@@ -24,9 +23,8 @@ export const createTokens=(user:UserEntity):returnTokens=>{
         gender:user.gender
     }
     const accessToken=sign(payload,process.env.ACCESS_TOKEN_SECRET,{expiresIn:process.env.ACCESS_TOKEN_EXPIN})
-    const refreshToken=sign(payload,process.env.REFRESH_TOKEN_SECRET,{expiresIn:process.env.REFRESH_TOKEN_EXPIN})
 
     return {
-        accessToken,refreshToken
+        accessToken
     }
 }
