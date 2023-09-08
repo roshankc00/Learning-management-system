@@ -1,7 +1,8 @@
 
+import { CategoryEntity } from 'src/category/entities/category.entity';
 import { GENDER } from 'src/utils/common/gender.enum';
 import {  Roles } from 'src/utils/common/user-role-enum';
-import {PrimaryGeneratedColumn,Column,Entity,CreateDateColumn,UpdateDateColumn,Timestamp} from 'typeorm'
+import {PrimaryGeneratedColumn,Column,Entity,CreateDateColumn,UpdateDateColumn,Timestamp,  OneToMany} from 'typeorm'
 
 @Entity('users')
 export class UserEntity {
@@ -28,6 +29,9 @@ export class UserEntity {
 
     @Column({type:'enum',enum:Roles,array:true,default:[Roles.USER]})
     roles:Roles[];
+
+    @OneToMany(()=>CategoryEntity,(cat)=>cat.addedBy)
+    categories:CategoryEntity[]
 
 
     @Column({type:'enum',enum:GENDER})

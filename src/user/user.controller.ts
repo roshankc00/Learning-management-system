@@ -14,8 +14,8 @@ import { UserSigninDto } from './dto/user.signin.dto';
 import { LoginResponseInterface, user_SignUp_Response_Interface } from 'src/interfaces/user.interface';
 import { CurrentUser } from 'src/utils/decorators/currentUser.decorator';
 import { AuthenticationGuard } from 'src/utils/guards/authentication.guard';
-// import { AuthorizationGuard } from 'src/utils/guards/authorization.guard';
-// import { Roles } from 'src/utils/common/user-role-enum';
+import { AuthorizationGuard } from 'src/utils/guards/authorization.guard';
+import { Roles } from 'src/utils/common/user-role-enum';
 
 
 @Controller('users')
@@ -46,13 +46,13 @@ export class UserController {
     
     
     
-    // @UseGuards(AuthenticationGuard,AuthorizationGuard([Roles.ADMIN]))
+    @UseGuards(AuthenticationGuard,AuthorizationGuard([Roles.ADMIN,Roles.SUPERADMIN]))
     @Get()
     async findAll(): Promise<UserEntity[]> {
       return await this.userService.getAllUser();
     }
     
-    // @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthenticationGuard,AuthorizationGuard([Roles.ADMIN,Roles.SUPERADMIN]))
     @Get(':id')
   async findOne(@Param('id') id: string): Promise<UserEntity> {
     return await this.userService.getSingleUser(id);
