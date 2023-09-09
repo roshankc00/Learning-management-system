@@ -6,7 +6,7 @@ import { AuthenticationGuard } from 'src/utils/guards/authentication.guard';
 import { CurrentUser } from 'src/utils/decorators/currentUser.decorator';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { CategoryEntity } from './entities/category.entity';
-import { delete_category_response_interface } from 'src/interfaces/category.interface';
+import { Category_Created_Response_Interface, Category_Updated_Response_Interface, delete_category_response_interface } from 'src/interfaces/category.interface';
 import { AuthorizationGuard } from 'src/utils/guards/authorization.guard';
 import { Roles } from 'src/utils/common/user-role-enum';
 
@@ -16,7 +16,7 @@ export class CategoryController {
 
   @Post()
   @UseGuards(AuthenticationGuard,AuthorizationGuard([Roles.ADMIN,Roles.SUPERADMIN]))
-  create(@Body(ValidationPipe) createCategoryDto: CreateCategoryDto, @CurrentUser() currentUser:UserEntity) {
+  create(@Body(ValidationPipe) createCategoryDto: CreateCategoryDto, @CurrentUser() currentUser:UserEntity):Promise<Category_Created_Response_Interface> {
     return this.categoryService.create(createCategoryDto,currentUser);
   }
   
@@ -33,7 +33,7 @@ export class CategoryController {
 
   @Patch(':id')
   @UseGuards(AuthenticationGuard,AuthorizationGuard([Roles.ADMIN,Roles.SUPERADMIN]))
-  async update(@Param('id') id: string, @Body(ValidationPipe) updateCategoryDto: UpdateCategoryDto) {
+  async update(@Param('id') id: string, @Body(ValidationPipe) updateCategoryDto: UpdateCategoryDto):Promise<Category_Updated_Response_Interface> {
     const category= await  this.categoryService.update(id, updateCategoryDto);
     console.log(category)
     return category

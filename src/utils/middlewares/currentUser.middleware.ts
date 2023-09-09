@@ -23,11 +23,14 @@ export class currentUserMiddleware implements NestMiddleware {
       return;
     } else {
         try {
-          console.log("me")            
       const token = authHeader.split(' ')[1];
       const { id } = <jwtPayload>verify(token, process.env.ACCESS_TOKEN_SECRET);
-      const currentUser = await this.userService.getSingleUser(id);
-      req.user=currentUser;
+      if(id){
+        const currentUser = await this.userService.getSingleUser(id);
+        req.user=currentUser;        
+      }else{
+        req.user=null
+      }
       next();
     } catch (error) {
         req.user=null;

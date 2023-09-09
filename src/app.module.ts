@@ -9,11 +9,12 @@ import { OrdersModule } from './orders/orders.module';
 import { CartModule } from './cart/cart.module';
 import { LecturesModule } from './lectures/lectures.module';
 import { currentUserMiddleware } from './utils/middlewares/currentUser.middleware';
+import { CloudinaryProvider } from './Cloudinary/providers/clodinary.provider';
 
 @Module({
   imports: [TypeOrmModule.forRoot(datasourceOptions), UserModule, CoursesModule, SectionsModule, CategoryModule, OrdersModule, CartModule, LecturesModule],
   controllers: [],
-  providers: [],
+  providers: [CloudinaryProvider],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

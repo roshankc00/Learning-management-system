@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { delete_category_response_interface } from 'src/interfaces/category.interface';
+import { Category_Created_Response_Interface, Category_Updated_Response_Interface, delete_category_response_interface } from 'src/interfaces/category.interface';
 
 @Injectable()
 export class CategoryService {
@@ -19,7 +19,7 @@ export class CategoryService {
   ) {}
 
   
-  async create(createCategoryDto: CreateCategoryDto, currentUser: UserEntity) {
+  async create(createCategoryDto: CreateCategoryDto, currentUser: UserEntity):Promise<Category_Created_Response_Interface> {
     const categoryExists = await this.categoryRepositary.findOneBy({
       title: createCategoryDto.title,
     });
@@ -28,8 +28,14 @@ export class CategoryService {
     }
     const category = this.categoryRepositary.create(createCategoryDto);
     category.addedBy = currentUser;
-    return await this.categoryRepositary.save(category);
+     await this.categoryRepositary.save(category);
+     return {
+      success:true,
+      message:"Category created sucessfully"
+     }
   }
+
+
 
   async findAll(): Promise<CategoryEntity[]> {
     return await this.categoryRepositary.find({
@@ -45,7 +51,10 @@ export class CategoryService {
     });
   }
 
-  async findOne(id: string) {
+
+
+
+  async findOne(id: string):Promise<CategoryEntity> {
     const category = await this.categoryRepositary.findOneBy({ id });
     if (!category) {
       throw new NotFoundException('the category with this id doesnt exists');
@@ -64,15 +73,20 @@ export class CategoryService {
     });
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+  async update(id: string, updateCategoryDto: UpdateCategoryDto):Promise <Category_Updated_Response_Interface> {
     const category = await this.categoryRepositary.findOneBy({ id });
     if (!category) {
       throw new NotFoundException('the category with this id doesnt exists');
     }
     Object.assign(category, updateCategoryDto);
-
-    return await this.categoryRepositary.save(category);
+    await this.categoryRepositary.save(category);
+    return {
+      success:true,
+      message:"category updated sucessfully"
+    }
   }
+
+
 
   async remove(id: string): Promise<delete_category_response_interface> {
     const category = await this.categoryRepositary.findOneBy({ id });

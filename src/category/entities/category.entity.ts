@@ -17,8 +17,6 @@ export class CategoryEntity {
 
 
 
-
-
     @CreateDateColumn()
     createdAt:Timestamp
 
