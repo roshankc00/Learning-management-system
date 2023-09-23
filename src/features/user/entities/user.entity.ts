@@ -1,6 +1,7 @@
 
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import { CourseEntity } from 'src/courses/entities/course.entity';
+import { ReviewEntity } from 'src/reviews/entities/review.entity';
 import { GENDER } from 'src/utils/common/gender.enum';
 import {  Roles } from 'src/utils/common/user-role-enum';
 import {PrimaryGeneratedColumn,Column,Entity,CreateDateColumn,UpdateDateColumn,Timestamp,  OneToMany} from 'typeorm'
@@ -36,6 +37,12 @@ export class UserEntity {
 
     @OneToMany(()=>CourseEntity,(cau)=>cau.addedBy)
     courses:CourseEntity[]
+
+
+    @OneToMany(()=>ReviewEntity,(cau)=>cau.user)
+    reviews:ReviewEntity[]
+
+
 
 
     @Column({type:'enum',enum:GENDER})

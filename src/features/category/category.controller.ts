@@ -2,13 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards , Validati
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { AuthenticationGuard } from 'src/utils/guards/authentication.guard';
-import { CurrentUser } from 'src/utils/decorators/currentUser.decorator';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { AuthenticationGuard } from 'src/core/guards/authentication.guard';
+import { CurrentUser } from 'src/core/decorators/currentUser.decorator';
 import { CategoryEntity } from './entities/category.entity';
 import { Category_Created_Response_Interface, Category_Updated_Response_Interface, delete_category_response_interface } from 'src/interfaces/category.interface';
-import { AuthorizationGuard } from 'src/utils/guards/authorization.guard';
+import { AuthorizationGuard } from 'src/core/guards/authorization.guard';
 import { Roles } from 'src/utils/common/user-role-enum';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Controller('categories')
 export class CategoryController {

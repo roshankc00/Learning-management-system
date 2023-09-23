@@ -5,9 +5,9 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { removeFile, saveImageToStorage } from 'src/helpers/image.storage';
 import { v2 } from 'cloudinary';
-import { CurrentUser } from 'src/utils/decorators/currentUser.decorator';
+import { CurrentUser } from 'src/core/decorators/currentUser.decorator';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { AuthenticationGuard } from 'src/utils/guards/authentication.guard';
+import { AuthenticationGuard } from 'src/core/guards/authentication.guard';
 
 
 @Controller('courses')

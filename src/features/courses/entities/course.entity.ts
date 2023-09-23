@@ -1,9 +1,11 @@
+import { ReviewEntity } from 'src/reviews/entities/review.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Timestamp,
   UpdateDateColumn,
@@ -46,6 +48,9 @@ export class CourseEntity {
 
   @ManyToOne(()=>UserEntity,(user)=>user.courses)
   addedBy:UserEntity;
+
+  @OneToMany(()=>ReviewEntity,(rev)=>rev.course)
+  reviews:ReviewEntity
 
   @CreateDateColumn()
   createdAt: Timestamp;

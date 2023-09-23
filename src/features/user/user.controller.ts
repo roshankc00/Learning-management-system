@@ -12,9 +12,9 @@ import { UserSignupDto } from './dto/user.signup.dto';
 import { UserEntity } from './entities/user.entity';
 import { UserSigninDto } from './dto/user.signin.dto';
 import { LoginResponseInterface, user_SignUp_Response_Interface } from 'src/interfaces/user.interface';
-import { CurrentUser } from 'src/utils/decorators/currentUser.decorator';
-import { AuthenticationGuard } from 'src/utils/guards/authentication.guard';
-import { AuthorizationGuard } from 'src/utils/guards/authorization.guard';
+import { CurrentUser } from 'src/core/decorators/currentUser.decorator';
+import { AuthenticationGuard } from 'src/core/guards/authentication.guard';
+import { AuthorizationGuard } from 'src/core/guards/authorization.guard';
 import { Roles } from 'src/utils/common/user-role-enum';
 
 
